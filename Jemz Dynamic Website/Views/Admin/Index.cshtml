@@ -1,0 +1,48 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "Shop dashboard";
+}
+<section class="admin-heading">
+    <div><p class="eyebrow">JEMZ COFFEE · SHOP TEAM</p><h1>Shop <em>dashboard.</em></h1><p>Here’s how the shop is doing today.</p></div>
+    <div class="admin-actions"><a class="button button-outline" asp-action="Menu">Manage menu</a><a class="button button-primary" asp-action="Content">Edit shop content</a></div>
+</section>
+<section class="stats-grid" aria-label="Shop statistics">
+    <article class="stat-card stat-dark"><p>ORDERS TODAY</p><strong>@Model.OrdersToday</strong><span>Orders placed since midnight UTC</span></article>
+    <article class="stat-card"><p>SALES TODAY</p><strong>₱@Model.SalesToday.ToString("N2")</strong><span>From today’s recorded orders</span></article>
+    <article class="stat-card"><p>ACTIVE CUSTOMERS</p><strong>@Model.ActiveUsers</strong><span>Accounts ready to order</span></article>
+    <article class="stat-card"><p>INACTIVE ACCOUNTS</p><strong>@Model.InactiveUsers</strong><span>Unable to sign in</span></article>
+</section>
+
+<section class="admin-section">
+    <div class="section-heading admin-section-heading"><div><p class="eyebrow">CUSTOMER ACCOUNTS</p><h2>People who stop by.</h2><p class="section-lede">View account details and activate or deactivate access.</p></div></div>
+    @if (Model.Users.Count == 0)
+    {
+        <div class="empty-state admin-empty"><h3>No accounts yet</h3><p>New customer accounts will show here after they sign up.</p></div>
+    }
+    else
+    {
+        <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Customer</th><th scope="col">Contact</th><th scope="col">Joined</th><th scope="col">Status</th><th scope="col"><span class="visually-hidden">Account action</span></th></tr></thead><tbody>
+        @foreach (var user in Model.Users)
+        {
+            <tr><td><strong>@user.FullName</strong><span class="table-secondary">@user.Email</span></td><td>@(string.IsNullOrWhiteSpace(user.PhoneNumber) ? "—" : user.PhoneNumber)</td><td>@user.JoinedAtUtc.ToLocalTime().ToString("MMM d, yyyy")</td><td><span class="status-pill @(user.IsActive ? "status-active" : "status-inactive")">@(user.IsActive ? "Active" : "Inactive")</span></td><td class="table-action"><form asp-action="ToggleUserStatus" method="post" onsubmit="return confirm(this.dataset.confirmation);" data-confirmation="@(user.IsActive ? "Deactivate this customer account? Existing sessions will end." : "Reactivate this customer account?")"><input type="hidden" name="id" value="@user.Id" /><button class="text-button @(user.IsActive ? "text-danger" : "text-positive")" type="submit">@(user.IsActive ? "Deactivate" : "Activate")</button></form></td></tr>
+        }
+        </tbody></table></div>
+    }
+</section>
+
+<section class="admin-section">
+    <div class="section-heading admin-section-heading"><div><p class="eyebrow">LATEST ORDERS</p><h2>Fresh from the counter.</h2></div></div>
+    @if (Model.RecentOrders.Count == 0)
+    {
+        <div class="empty-state admin-empty"><h3>No orders yet</h3><p>Placed orders will appear here as customers check out.</p></div>
+    }
+    else
+    {
+        <div class="table-wrap"><table class="data-table"><thead><tr><th scope="col">Order</th><th scope="col">Placed</th><th scope="col">Method</th><th scope="col">Items</th><th scope="col">Total</th><th scope="col">Status</th></tr></thead><tbody>
+        @foreach (var order in Model.RecentOrders)
+        {
+            <tr><td><strong>#@order.Id.ToString("D5")</strong></td><td>@order.CreatedAtUtc.ToLocalTime().ToString("MMM d · h:mm tt")</td><td>@order.FulfillmentType</td><td>@order.Lines.Sum(line => line.Quantity)</td><td><strong>₱@order.Total.ToString("0.00")</strong></td><td><span class="status-pill">@order.Status</span></td></tr>
+        }
+        </tbody></table></div>
+    }
+</section>

@@ -1,0 +1,41 @@
+@model CartViewModel
+@{
+    ViewData["Title"] = "Your bag";
+}
+<section class="page-heading page-heading-compact">
+    <p class="eyebrow">YOUR ORDER, YOUR WAY</p>
+    <h1>Your <em>bag.</em></h1>
+    <p class="page-lede">A fresh cup is just around the corner.</p>
+</section>
+@if (Model.Items.Count == 0)
+{
+    <section class="empty-state cart-empty"><span aria-hidden="true">☕</span><h2>Your bag is waiting for something good.</h2><p>Pick a favorite from the menu to get started.</p><a class="button button-primary" asp-controller="Home" asp-action="Index">Browse the menu</a></section>
+}
+else
+{
+    <div class="cart-layout">
+        <section class="cart-lines" aria-label="Items in your bag">
+            @foreach (var line in Model.Items)
+            {
+                <article class="cart-line">
+                    <div class="cart-item-art" aria-hidden="true">@line.Item.Icon</div>
+                    <div class="cart-item-info"><p class="eyebrow">@line.Item.Category</p><h2>@line.Item.Name</h2><p>₱@line.Item.Price.ToString("0.00") each</p></div>
+                    <form asp-action="Update" method="post" class="quantity-form">
+                        <input type="hidden" name="menuItemId" value="@line.Item.Id" />
+                        <label for="quantity-@line.Item.Id">Quantity</label>
+                        <div class="quantity-controls"><input id="quantity-@line.Item.Id" type="number" name="quantity" min="1" max="50" value="@line.Quantity" /><button type="submit" class="button button-quiet">Update</button></div>
+                    </form>
+                    <div class="cart-line-total"><strong>₱@line.LineTotal.ToString("0.00")</strong><form asp-action="Update" method="post"><input type="hidden" name="menuItemId" value="@line.Item.Id" /><button class="text-button text-danger" name="quantity" value="0" type="submit">Remove</button></form></div>
+                </article>
+            }
+            <a class="text-link continue-link" asp-controller="Home" asp-action="Index">← Keep browsing</a>
+        </section>
+        <aside class="cart-summary">
+            <p class="eyebrow">ORDER SUMMARY</p><h2>Almost there.</h2>
+            <div class="summary-row"><span>Subtotal</span><strong>₱@Model.Subtotal.ToString("0.00")</strong></div>
+            <p class="summary-note">Pickup is free. Delivery details and any fees are confirmed by the shop.</p>
+            <a class="button button-primary button-wide" asp-action="Checkout">Choose pickup or delivery <span aria-hidden="true">→</span></a>
+            <div class="summary-perk"><span aria-hidden="true">♡</span><span>Every order is made fresh after you place it.</span></div>
+        </aside>
+    </div>
+}

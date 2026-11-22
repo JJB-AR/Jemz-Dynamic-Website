@@ -1,0 +1,34 @@
+@model CheckoutViewModel
+@{
+    ViewData["Title"] = "Choose fulfillment";
+}
+<section class="page-heading page-heading-compact">
+    <p class="eyebrow">PICKUP OR DELIVERY</p>
+    <h1>How should we get it <em>to you?</em></h1>
+    <p class="page-lede">Choose what works best. We’ll make it fresh either way.</p>
+</section>
+<div class="checkout-layout">
+    <form asp-action="Checkout" method="post" class="form-panel checkout-form">
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <fieldset class="fulfillment-fieldset">
+            <legend>Choose one</legend>
+            <div class="fulfillment-options">
+                <label class="fulfillment-choice"><input asp-for="FulfillmentType" type="radio" value="Pickup" /><span class="fulfillment-icon" aria-hidden="true">⌂</span><span><strong>Pick it up</strong><small>Ready at the shop counter</small></span></label>
+                <label class="fulfillment-choice"><input asp-for="FulfillmentType" type="radio" value="Delivery" /><span class="fulfillment-icon" aria-hidden="true">↗</span><span><strong>Deliver it</strong><small>Bring it to your door</small></span></label>
+            </div>
+        </fieldset>
+        <div class="form-field"><label asp-for="DeliveryAddress"></label><textarea asp-for="DeliveryAddress" rows="3" placeholder="House or unit, street, area, city"></textarea><span class="field-hint">Required for delivery. Leave blank for pickup.</span><span asp-validation-for="DeliveryAddress" class="field-error"></span></div>
+        <div class="form-field"><label asp-for="CustomerNote"></label><textarea asp-for="CustomerNote" rows="3" placeholder="Anything we should know? (optional)"></textarea></div>
+        <button class="button button-primary button-wide" type="submit">Place order <span aria-hidden="true">→</span></button>
+        <p class="checkout-disclaimer">Payment is handled when the shop confirms your order.</p>
+    </form>
+    <aside class="cart-summary checkout-summary">
+        <p class="eyebrow">IN YOUR BAG</p><h2>@Model.Cart.Items.Count item@(Model.Cart.Items.Count == 1 ? "" : "s")</h2>
+        @foreach (var line in Model.Cart.Items)
+        {
+            <div class="summary-row"><span>@line.Quantity × @line.Item.Name</span><strong>₱@line.LineTotal.ToString("0.00")</strong></div>
+        }
+        <div class="summary-row summary-total"><span>Subtotal</span><strong>₱@Model.Cart.Subtotal.ToString("0.00")</strong></div>
+        <a class="text-link" asp-action="Cart">Edit your bag</a>
+    </aside>
+</div>

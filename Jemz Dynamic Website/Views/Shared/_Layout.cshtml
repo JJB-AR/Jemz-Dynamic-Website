@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f6f3e9" />
+    <title>@ViewData["Title"] · Jemz Coffee</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="container header-inner">
+            @await Component.InvokeAsync("SiteBrand")
+            <nav class="main-nav" aria-label="Main navigation">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a asp-controller="Home" asp-action="Index">Order</a>
+                    <a asp-controller="Home" asp-action="About">Our story</a>
+                    <a asp-controller="Home" asp-action="Contact">Contact</a>
+                    <a asp-controller="Order" asp-action="History">Orders</a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Admin" asp-action="Index">Admin</a>
+                    }
+                    <a class="nav-cart" asp-controller="Order" asp-action="Cart"><span aria-hidden="true">♧</span> Bag</a>
+                    <a class="nav-profile" asp-controller="Account" asp-action="Profile">Account</a>
+                    <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                        <button class="nav-logout" type="submit">Sign out</button>
+                    </form>
+                }
+                else
+                {
+                    <a class="button button-small" asp-controller="Account" asp-action="Login">Sign in</a>
+                }
+            </nav>
+        </div>
+    </header>
+    <main id="main-content" class="container main-content">
+        @if (TempData["Notice"] is string notice)
+        {
+            <div class="notice" role="status">@notice</div>
+        }
+        @RenderBody()
+    </main>
+    <footer class="site-footer">
+        <div class="container footer-inner">
+            <span>Made for your daily coffee ritual.</span>
+            <span>Pickup or delivered, always made with care.</span>
+        </div>
+    </footer>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

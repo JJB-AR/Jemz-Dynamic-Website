@@ -1,0 +1,21 @@
+@model ShopProfileInput
+@{
+    ViewData["Title"] = "Shop content";
+}
+<section class="page-heading page-heading-compact">
+    <p class="eyebrow">SHOP CONTENT</p>
+    <h1>Tell your <em>story.</em></h1>
+    <p class="page-lede">These details appear on the shop pages customers see.</p>
+</section>
+<section class="form-panel admin-form-panel">
+    <form asp-action="Content" method="post" class="form-stack">
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="form-field"><label asp-for="BrandName"></label><input asp-for="BrandName" /></div>
+        <div class="form-field"><label asp-for="Tagline"></label><input asp-for="Tagline" /></div>
+        <div class="form-field"><label asp-for="About"></label><textarea asp-for="About" rows="5"></textarea></div>
+        <div class="form-field"><label asp-for="Owners"></label><input asp-for="Owners" /></div>
+        <div class="form-two-col"><div class="form-field"><label asp-for="ContactEmail"></label><input asp-for="ContactEmail" type="email" autocomplete="email" /></div><div class="form-field"><label asp-for="ContactPhone"></label><input asp-for="ContactPhone" type="tel" autocomplete="tel" /></div></div>
+        <div class="form-two-col"><div class="form-field"><label asp-for="Address"></label><input asp-for="Address" autocomplete="street-address" /></div><div class="form-field"><label asp-for="OpeningHours"></label><input asp-for="OpeningHours" /></div></div>
+        <div class="form-actions"><a class="button button-outline" asp-action="Index">Cancel</a><button class="button button-primary" type="submit">Save shop details <span aria-hidden="true">→</span></button></div>
+    </form>
+</section>

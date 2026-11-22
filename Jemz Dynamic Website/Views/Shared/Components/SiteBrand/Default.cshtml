@@ -1,0 +1,8 @@
+@model JemzCoffee.Models.ShopProfile?
+<a class="brand" asp-controller="Home" asp-action="Index" aria-label="@(Model?.BrandName ?? "Jemz Coffee") home">
+    <span class="brand-mark" aria-hidden="true"><span></span></span>
+    <span class="brand-copy">
+        <strong>@(Model?.BrandName ?? "Jemz Coffee")</strong>
+        <small>NEIGHBORHOOD COFFEE</small>
+    </span>
+</a>

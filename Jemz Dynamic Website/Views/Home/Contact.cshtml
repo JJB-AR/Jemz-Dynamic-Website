@@ -1,0 +1,13 @@
+@model ShopProfile
+@{
+    ViewData["Title"] = "Contact";
+}
+<section class="page-heading page-heading-compact">
+    <p class="eyebrow">SAY HELLO</p>
+    <h1>We’d love to<br /><em>hear from you.</em></h1>
+    <p class="page-lede">Questions about an order or just want to talk coffee? We’re here.</p>
+</section>
+<section class="contact-grid">
+    <article class="contact-card"><span class="contact-icon" aria-hidden="true">⌖</span><p class="eyebrow">COME ON BY</p><h2>Find the shop</h2><p>@Model.Address</p><p class="contact-secondary">@Model.OpeningHours</p><a class="text-link" href="https://maps.google.com/?q=@Uri.EscapeDataString(Model.Address)" target="_blank" rel="noreferrer">Get directions <span aria-hidden="true">↗</span></a></article>
+    <article class="contact-card contact-card-dark"><span class="contact-icon" aria-hidden="true">✉</span><p class="eyebrow eyebrow-light">DROP US A NOTE</p><h2>Let’s chat</h2><p><a href="mailto:@Model.ContactEmail">@Model.ContactEmail</a></p><p><a href="tel:@Model.ContactPhone">@Model.ContactPhone</a></p><a class="button button-cream" href="mailto:@Model.ContactEmail">Email the shop <span aria-hidden="true">↗</span></a></article>
+</section>

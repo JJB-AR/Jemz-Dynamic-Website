@@ -1,0 +1,23 @@
+@model OrderReceiptViewModel
+@{
+    ViewData["Title"] = "Order received";
+}
+<section class="confirmation-card">
+    <div class="confirmation-stamp" aria-hidden="true">✓</div>
+    <p class="eyebrow">ORDER #@Model.Order.Id.ToString("D5")</p>
+    <h1>That’s a <em>good choice.</em></h1>
+    <p class="page-lede">Your order is in. We’ll get it ready for @Model.Order.FulfillmentType.ToLowerInvariant().</p>
+    <div class="receipt-lines">
+        @foreach (var line in Model.Order.Lines)
+        {
+            <div class="summary-row"><span>@line.Quantity × @line.ItemName</span><strong>₱@((line.UnitPrice * line.Quantity).ToString("0.00"))</strong></div>
+        }
+        @if (Model.Order.FulfillmentType == "Delivery")
+        {
+            <div class="receipt-address"><span class="eyebrow">DELIVER TO</span><span>@Model.Order.DeliveryAddress</span></div>
+        }
+        <div class="summary-row summary-total"><span>Subtotal</span><strong>₱@Model.Order.Total.ToString("0.00")</strong></div>
+    </div>
+    <p class="checkout-disclaimer">The shop will contact you if anything needs confirming.</p>
+    <div class="confirmation-actions"><a class="button button-primary" asp-controller="Order" asp-action="History">See your orders</a><a class="text-link" asp-controller="Home" asp-action="Index">Back to the menu</a></div>
+</section>

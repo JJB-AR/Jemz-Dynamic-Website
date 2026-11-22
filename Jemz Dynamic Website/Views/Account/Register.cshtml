@@ -1,0 +1,27 @@
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Create account";
+}
+<section class="auth-layout auth-layout-register">
+    <div class="auth-aside">
+        <p class="eyebrow eyebrow-light">MAKE ROOM FOR A NEW RITUAL</p>
+        <h1>Good things<br />start with<br /><em>hello.</em></h1>
+        <p>Create your account to browse the menu, save your details and order your way.</p>
+        <div class="auth-aside-art" aria-hidden="true">✿</div>
+    </div>
+    <div class="auth-card">
+        <p class="eyebrow">JOIN THE COFFEE CLUB</p>
+        <h2>Create your account</h2>
+        <p class="auth-intro">A few details and your next cup is on its way.</p>
+        <form asp-action="Register" method="post" class="form-stack">
+            <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+            <div class="form-field"><label asp-for="FullName"></label><input asp-for="FullName" autocomplete="name" placeholder="Your name" /></div>
+            <div class="form-field"><label asp-for="Email"></label><input asp-for="Email" type="email" autocomplete="email" placeholder="name@example.com" /></div>
+            <div class="form-field"><label asp-for="PhoneNumber"></label><input asp-for="PhoneNumber" type="tel" autocomplete="tel" placeholder="+63 900 000 0000" /></div>
+            <div class="form-field"><label asp-for="Password"></label><input asp-for="Password" autocomplete="new-password" placeholder="At least 8 characters" /><span class="field-hint">Use at least 8 characters and one number.</span></div>
+            <div class="form-field"><label asp-for="ConfirmPassword"></label><input asp-for="ConfirmPassword" autocomplete="new-password" placeholder="Type your password again" /></div>
+            <button class="button button-primary button-wide" type="submit">Create account <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">Already have an account? <a asp-action="Login">Sign in</a></p>
+    </div>
+</section>

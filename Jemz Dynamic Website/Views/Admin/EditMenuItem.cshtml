@@ -1,0 +1,21 @@
+@model MenuItemInput
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Add menu item" : "Edit menu item";
+    var edit = Model.Id > 0;
+}
+<section class="page-heading page-heading-compact">
+    <p class="eyebrow">SHOP CONTENT</p>
+    <h1>@(edit ? "Edit a menu" : "Add a menu") <em>item.</em></h1>
+    <p class="page-lede">Keep each drink or treat clear and easy to order.</p>
+</section>
+<section class="form-panel admin-form-panel">
+    <form asp-action="@(edit ? "EditMenuItem" : "NewMenuItem")" method="post" class="form-stack">
+        <input asp-for="Id" type="hidden" />
+        <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+        <div class="form-field"><label asp-for="Name"></label><input asp-for="Name" placeholder="Brown Sugar Latte" /></div>
+        <div class="form-field"><label asp-for="Description"></label><textarea asp-for="Description" rows="3" placeholder="A short, appetizing description"></textarea></div>
+        <div class="form-two-col"><div class="form-field"><label asp-for="Category"></label><input asp-for="Category" placeholder="Coffee" /></div><div class="form-field"><label asp-for="Price"></label><div class="price-input"><span>₱</span><input asp-for="Price" type="number" min="0.01" max="9999" step="0.01" /></div></div></div>
+        <div class="form-field"><label asp-for="Icon"></label><input asp-for="Icon" placeholder="☕" /><span class="field-hint">Use one small emoji for the menu card.</span></div>
+        <div class="form-actions"><a class="button button-outline" asp-action="Menu">Cancel</a><button class="button button-primary" type="submit">@(edit ? "Save item" : "Add item") <span aria-hidden="true">→</span></button></div>
+    </form>
+</section>

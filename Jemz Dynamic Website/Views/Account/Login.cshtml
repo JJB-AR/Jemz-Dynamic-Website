@@ -1,0 +1,27 @@
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Sign in";
+}
+<section class="auth-layout">
+    <div class="auth-aside">
+        <p class="eyebrow eyebrow-light">A GOOD CUP IS CLOSER</p>
+        <h1>Your little<br />coffee break<br /><em>starts here.</em></h1>
+        <p>Sign in to see the menu and order for pickup or delivery.</p>
+        <div class="auth-aside-art" aria-hidden="true">☕</div>
+    </div>
+    <div class="auth-card">
+        <p class="eyebrow">WELCOME BACK</p>
+        <h2>Sign in</h2>
+        <p class="auth-intro">Pick up right where your next favorite begins.</p>
+        <form asp-action="Login" method="post" class="form-stack">
+            <input asp-for="ReturnUrl" type="hidden" />
+            <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+            <div class="form-field"><label asp-for="Email"></label><input asp-for="Email" type="email" autocomplete="email" placeholder="name@example.com" /></div>
+            <div class="form-field"><label asp-for="Password"></label><input asp-for="Password" autocomplete="current-password" placeholder="Your password" /></div>
+            <label class="check-field"><input asp-for="RememberMe" /><span>Keep me signed in</span></label>
+            <button class="button button-primary button-wide" type="submit">Sign in <span aria-hidden="true">→</span></button>
+        </form>
+        <p class="auth-switch">New around here? <a asp-action="Register">Create an account</a></p>
+        <p class="auth-note">Your menu and order history are ready after you sign in.</p>
+    </div>
+</section>

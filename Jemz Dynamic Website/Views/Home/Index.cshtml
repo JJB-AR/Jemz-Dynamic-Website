@@ -1,0 +1,89 @@
+@model HomeViewModel
+@{
+    ViewData["Title"] = "Order coffee";
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+<section class="hero">
+    <div class="hero-copy">
+        <p class="eyebrow eyebrow-light"><span class="eyebrow-dot"></span> YOUR NEIGHBORHOOD CUP, ON YOUR TIME</p>
+        <h1>Your next good<br /><em>thing</em> is brewing.</h1>
+        <p class="hero-lede">@Model.Shop.Tagline Order ahead for pickup or get your favorites delivered to your door.</p>
+        <a class="button button-cream" href="#menu">Explore the menu <span aria-hidden="true">↓</span></a>
+        <div class="hero-proof"><span class="proof-stars" aria-hidden="true">★★★★★</span><span>Made fresh, just for you</span></div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <span class="hero-sun"></span>
+        <span class="hero-leaf leaf-one"></span>
+        <span class="hero-leaf leaf-two"></span>
+        <span class="hero-bean bean-one"></span>
+        <span class="hero-bean bean-two"></span>
+        <div class="hero-cup"><span class="cup-latte"></span><span class="cup-logo">J</span><span class="cup-handle"></span></div>
+        <div class="art-label"><span>✦</span> A little pause<br />in your day</div>
+        <span class="art-caption">SIP SLOW. FEEL GOOD.</span>
+    </div>
+</section>
+
+<section class="order-promise" aria-label="Ordering options">
+    <div class="promise-item"><span class="promise-icon" aria-hidden="true">↗</span><div><strong>Order ahead</strong><span>Skip the wait at the counter</span></div></div>
+    <span class="promise-divider" aria-hidden="true"></span>
+    <div class="promise-item"><span class="promise-icon" aria-hidden="true">⌂</span><div><strong>Pickup or delivery</strong><span>Your coffee, your call</span></div></div>
+    <span class="promise-divider" aria-hidden="true"></span>
+    <div class="promise-item"><span class="promise-icon" aria-hidden="true">♡</span><div><strong>Made with care</strong><span>Good ingredients, good mood</span></div></div>
+</section>
+
+<section id="menu" class="menu-section">
+    <div class="section-heading">
+        <div>
+            <p class="eyebrow">THE GOOD STUFF</p>
+            <h2>Find your new <em>favorite.</em></h2>
+            <p class="section-lede">A few small-batch sips and treats to brighten your day.</p>
+        </div>
+        <a class="text-link" asp-controller="Order" asp-action="Cart">View your bag <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <form asp-controller="Home" asp-action="Index" method="get" class="menu-tools">
+        <label class="search-field"><span aria-hidden="true">⌕</span><span class="visually-hidden">Search the menu</span><input type="search" name="q" value="@Model.Search" placeholder="Find a drink or treat" /></label>
+        <div class="category-list" aria-label="Filter by category">
+            <a class="category-chip @(string.IsNullOrEmpty(Model.Category) || Model.Category == "All" ? "selected" : "")" asp-route-q="@Model.Search" asp-route-category="All">Everything</a>
+            @foreach (var category in Model.Categories)
+            {
+                <a class="category-chip @(Model.Category == category ? "selected" : "")" asp-route-q="@Model.Search" asp-route-category="@category">@category</a>
+            }
+        </div>
+    </form>
+
+    @if (Model.MenuItems.Count == 0)
+    {
+        <div class="empty-state"><span aria-hidden="true">☕</span><h3>Nothing on the menu matches that</h3><p>Try another search or browse everything we have today.</p><a class="button button-outline" asp-action="Index" asp-route-category="All">Show the full menu</a></div>
+    }
+    else
+    {
+        <div class="menu-grid">
+            @foreach (var item in Model.MenuItems)
+            {
+                <article class="menu-card">
+                    <div class="menu-art art-@item.Category.ToLowerInvariant().Replace(" & ", "-").Replace(" ", "-")">
+                        <span class="item-emoji" aria-hidden="true">@item.Icon</span>
+                        <span class="art-spark spark-one" aria-hidden="true">✳</span><span class="art-spark spark-two" aria-hidden="true">·</span>
+                        <span class="art-category">@item.Category</span>
+                    </div>
+                    <div class="menu-card-content">
+                        <div class="menu-card-heading"><h3>@item.Name</h3><span class="item-price">₱@item.Price.ToString("0.00")</span></div>
+                        <p>@item.Description</p>
+                        <form asp-controller="Order" asp-action="Add" method="post" class="add-form">
+                            <input type="hidden" name="menuItemId" value="@item.Id" />
+                            <input type="hidden" name="returnUrl" value="@returnUrl" />
+                            <button class="button button-add" type="submit"><span aria-hidden="true">＋</span> Add to bag</button>
+                        </form>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>
+
+<section class="delivery-banner">
+    <span class="delivery-art" aria-hidden="true">☕</span>
+    <div><p class="eyebrow eyebrow-light">YOUR COUCH CALLED</p><h2>Let the good stuff come to you.</h2><p>Choose delivery at checkout, or swing by and pick up a fresh cup.</p></div>
+    <a class="button button-cream" href="#menu">Build your order <span aria-hidden="true">↗</span></a>
+</section>

@@ -1,0 +1,14 @@
+@model ShopProfile
+@{
+    ViewData["Title"] = "Our story";
+}
+<section class="page-heading">
+    <p class="eyebrow">A LITTLE ABOUT US</p>
+    <h1>Good coffee starts<br />with <em>good people.</em></h1>
+    <p class="page-lede">@Model.Tagline</p>
+</section>
+<section class="story-panel">
+    <div class="story-symbol" aria-hidden="true">✿</div>
+    <div><p class="eyebrow">OUR STORY</p><h2>A neighborhood spot,<br />wherever you are.</h2><p>@Model.About</p></div>
+</section>
+<section class="owner-panel"><div><p class="eyebrow">THE PEOPLE BEHIND THE POUR</p><h2>Made by <em>@Model.Owners</em></h2></div><a class="button button-primary" asp-controller="Home" asp-action="Index">Find your next cup</a></section>
